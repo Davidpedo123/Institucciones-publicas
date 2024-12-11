@@ -3,5 +3,7 @@ fastapi
 openpyxl
 sqlmodel
 uvicorn
-sqlalchemy[asyncio] databases
+sqlalchemy[asyncio]
+databases[aiosqlite]
+
 aiosqlite
