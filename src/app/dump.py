@@ -1,4 +1,4 @@
-from config import get_session, instituciones
+from .config import get_session, instituciones
 from sqlmodel import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends

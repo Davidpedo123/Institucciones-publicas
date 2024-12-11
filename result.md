@@ -11,3 +11,8 @@ Luego de aplicar el #PRAGMA y la #Concurrencia a la base de datos
 Como la api sera lo mas ligera utilizaremos cache, pero departe del cliente, este solo sera notable, de parte si solicita desde un navegador
 ![[Pasted image 20241210212408.png]]
 #todo-async aqui tanto el dump, el config y el main lo convertimos totalmente async ![[Pasted image 20241210220007.png]]
+
+
+#Comandos
+#docker build -t api-inst -f ./deployment/Dockerfile .
+#docker run -p 8080:8080 -h "0.0.0.0" api-inst

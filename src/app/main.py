@@ -2,8 +2,8 @@ from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from config import get_session
-from dump import Instituciones
+from .config import get_session
+from .dump import Instituciones
 
 app = FastAPI()
 
