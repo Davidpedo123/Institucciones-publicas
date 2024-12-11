@@ -10,7 +10,7 @@ class instituciones(SQLModel, table=True):
 
 
 engine = create_async_engine(
-    "sqlite+aiosqlite:///data.db",  # Uso de aiosqlite como base de datos
+    "sqlite+aiosqlite:///./data/data.db",  # Uso de aiosqlite como base de datos
     connect_args={"check_same_thread": False},  # Para SQLite en un solo hilo
 )
 
