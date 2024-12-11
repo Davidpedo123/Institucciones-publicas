@@ -1,23 +1,27 @@
-from config import instituciones, session
-from sqlmodel import select
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Depends
+from fastapi.responses import JSONResponse
+
+from dump import Instituciones
+from sqlmodel import Session
+from config import instituciones, get_session
+import json
 
 app = FastAPI()
 
-consulta = select(instituciones.nombre)
-resultados = session.exec(consulta).all()
-
-nombres = [{"nombre": institucion} for institucion in resultados]
-
 
 @app.get("/api/instituciones")
-async def inst(request: Request):
-    institucion = nombres
-    return {"instituciones" : institucion}
+async def get_instituciones(session: Session = Depends(get_session)):
+    
+    
+    nombres = Instituciones.cargar_datos(session)
+    
+    return JSONResponse(
+        content={"instituciones": nombres},
+        media_type="application/json",
+        headers={"Content-Length": "64868",
+                 "Cache-Control": "max-age=604800"
 
+                 
+                 },
+    )
 
-import uvicorn
-
-if __name__ == "__main__":
-
-    uvicorn.run(app, host="0.0.0.0", port=8080)
