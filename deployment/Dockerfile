@@ -10,4 +10,4 @@ RUN ls -la
 RUN pip install --no-cache-dir -r /src/lib/requirements.txt
 
 
-CMD ["python3", "app/main.py"]
+CMD ["uvicorn", "main:app", "--port", "8080", "--host", "0.0.0.0"]
