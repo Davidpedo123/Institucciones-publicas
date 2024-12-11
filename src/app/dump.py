@@ -1,14 +1,17 @@
 from config import get_session, instituciones
-from sqlmodel import select, Session
+from sqlmodel import select
+from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import Depends
 
 class Instituciones:
     nombres = None
 
     @classmethod
-    def cargar_datos(cls, session: Session = Depends(get_session)):
+    async def cargar_datos(cls, session: AsyncSession = Depends(get_session)):
         if cls.nombres is None:
+            # Ejecutar la consulta de manera asíncrona
             consulta = select(instituciones.nombre)
-            resultados = session.exec(consulta).all()
-            cls.nombres = [{"nombre": institucion} for institucion in resultados]
+            resultados = await session.execute(consulta)  
+            resultados = resultados.all()  
+            cls.nombres = [{"nombre": institucion[0]} for institucion in resultados]  
         return cls.nombres

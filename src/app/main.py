@@ -1,19 +1,17 @@
 from fastapi import FastAPI, Depends
 from fastapi.responses import JSONResponse
 
+from sqlalchemy.ext.asyncio import AsyncSession
+from config import get_session
 from dump import Instituciones
-from sqlmodel import Session
-from config import instituciones, get_session
-import json
 
 app = FastAPI()
 
 
 @app.get("/api/instituciones")
-async def get_instituciones(session: Session = Depends(get_session)):
-    
-    
-    nombres = Instituciones.cargar_datos(session)
+async def get_instituciones(session: AsyncSession = Depends(get_session)):
+    # Llamada asíncrona para cargar los datos
+    nombres = await Instituciones.cargar_datos(session)
     
     return JSONResponse(
         content={"instituciones": nombres},
