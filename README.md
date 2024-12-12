@@ -3,6 +3,8 @@ Este repositorio aparte de ser una API que contiene todas las instituciones publ
 
 URL: https://institucciones-publicas-rd.onrender.com/api/instituciones
 (las pruebas fueron hechas en local, el servidor en la que esta esta desplegada esta limitada)
+
+
 Al inicio del proyecto este era el response de la API tras las pruebas.
 ![Primera Prueba](https://i.ibb.co/7NQ9Kmb/Primera-Prueba.png)
 
