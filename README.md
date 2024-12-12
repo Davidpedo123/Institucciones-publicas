@@ -10,9 +10,10 @@ Nota: Las pruebas de rendimiento se realizaron en un entorno local. El servidor 
 
 Rendimiento Inicial
 
+
 Al inicio del proyecto, este era el tiempo de respuesta de la API tras realizar pruebas de carga:
 
-
+![Primera Prueba](https://i.ibb.co/7NQ9Kmb/Primera-Prueba.png)
 
 Tiempo total: 8 segundos.
 
@@ -24,7 +25,7 @@ Resultado Final
 
 Tras aplicar optimizaciones, los resultados mejoraron significativamente:
 
-
+![Resultado Final](https://i.ibb.co/3SpB4c1/Resultado-Final-Prueba.png)
 
 Tiempo de respuesta: 2 ms.
 
