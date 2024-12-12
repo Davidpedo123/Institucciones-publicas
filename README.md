@@ -1,1 +1,0 @@
-Este repositorio aparte de ser una API que contiene todas las instituciones publicas, es una guia de como podemos optimizar el rendimiento de nuestros aplicativos sin tener que aumentar el hardware o agregar diferentes instancias o servidores de cache.
