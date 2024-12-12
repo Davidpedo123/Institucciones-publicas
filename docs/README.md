@@ -97,11 +97,11 @@ Tras las optimizaciones, los resultados mejoraron significativamente:
 - SQLite, aunque no es ideal para entornos asíncronos, puede ajustarse con las configuraciones correctas.
 - El manejo eficiente de caché y cabeceras HTTP contribuye al rendimiento global.
 
-## Observaciones y Errores Detectados
+## Observaciones 
 
-1. **Confusión entre asíncrono y sincrónico:** Inicialmente, se manejaban procesos sincrónicos en un entorno que debía ser asíncrono.
-2. **Falta de caché inicial:** La ausencia de almacenamiento temporal incrementaba el tiempo de respuesta en solicitudes repetitivas.
-3. **Dependencia de datos estáticos:** Aunque es válido para datos fijos, limitar la actualización al reinicio del servidor no es escalable para datos dinámicos.
+1. **Aprovechamiento del hardware:** El servidor de uvicorn en la forma que se ejecuto no aprovecha todo el potencial de los nucleos del CPU, el rendimiento podria aumentar si este se configura para esto..
+2. **Cache:** El manejar el cache mediantes proxy o servidores como redis pueden aumentar notablemente el rendimiento de la aplicacion claro con un costo extra en recursos.
+3. **Imagen Docker:** La imagen docker utilizada se puede optimizar para hacer las APIs mas eficiente como tecnicas como el `multi-stage` o usar imagenes `slim` .
 
 Para mayor información sobre los resultados y los gráficos utilizados, consulta las URLs:
 
