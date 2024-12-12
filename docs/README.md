@@ -1,6 +1,6 @@
-# Guía de Optimización y Análisis de una API con Instituciones Públicas
+# Guía de Optimización y Análisis de una API con Instituciones Públicas de la Republica Dominicana
 
-Este repositorio no solo actúa como una API que contiene todas las instituciones públicas, sino también como una guía práctica sobre cómo optimizar el rendimiento de aplicaciones sin necesidad de incrementar los recursos de hardware.
+Este repositorio no solo actúa como una API que contiene todas las instituciones públicas Republica Dominicana, sino también como una guía práctica sobre cómo optimizar el rendimiento de aplicaciones sin necesidad de incrementar los recursos de hardware.
 
 ## Rendimiento Inicial
 
