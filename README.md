@@ -1,4 +1,4 @@
-API de Instituciones Públicas y Guía de Optimización
+# API de Instituciones Públicas y Guía de Optimización
 
 Este repositorio, además de ser una API que proporciona información sobre todas las instituciones públicas, sirve como una guía práctica para optimizar el rendimiento de aplicaciones sin necesidad de aumentar recursos de hardware, instancias adicionales o servidores de caché.
 
@@ -8,7 +8,7 @@ URL: https://institucciones-publicas-rd.onrender.com/api/instituciones
 
 Nota: Las pruebas de rendimiento se realizaron en un entorno local. El servidor desplegado tiene recursos limitados.
 
-Rendimiento Inicial
+# Rendimiento Inicial
 
 
 Al inicio del proyecto, este era el tiempo de respuesta de la API tras realizar pruebas de carga:
@@ -21,7 +21,7 @@ Procesamiento: 121 respuestas por segundo.
 
 Carga: 1,000 usuarios concurrentes.
 
-Resultado Final
+# Resultado Final
 
 Tras aplicar optimizaciones, los resultados mejoraron significativamente:
 
@@ -33,7 +33,7 @@ Procesamiento: 479 respuestas por segundo.
 
 Carga: 1,000 usuarios concurrentes.
 
-Resultado final utilizando varios workers
+# Resultado final utilizando varios workers
 
 ![Resultado Final con CPU](https://i.ibb.co/m9SkKxj/Resultado-Final-Con-Uso-Del-Procesador.png)
 
