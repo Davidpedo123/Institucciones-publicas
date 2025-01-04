@@ -5,5 +5,5 @@ sqlmodel
 uvicorn
 sqlalchemy[asyncio]
 databases[aiosqlite]
-
+gunicorn[uvicorn]
 aiosqlite

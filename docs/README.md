@@ -55,3 +55,12 @@ La parte final de esta optimizacion es en el endpoint, en el cual los puntos imp
 Cuando anteriormente sin optimizar, tuvimos el primer resultado de 8s para culminar el test, con la misma carga, pero con 121 respuestas por segundo.
 
 Sin tener que agregar sistemas complejos de cache o aumentar vertical o horizontalmente la aplicacion!
+
+Caracteristicas del equipo utilizado
+
+'Usando todo el CPU'
+![cpu](image.png)
+![cpu1]()
+BUILD
+docker build -t api-instituciones-fastapi -f deployment/Dockerfile .
+docker run -p 8080:8080 api-instituciones-fastapi
