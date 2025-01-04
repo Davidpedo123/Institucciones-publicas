@@ -37,6 +37,12 @@ Carga: 1,000 usuarios concurrentes.
 
 ![Resultado Final con CPU](https://i.ibb.co/m9SkKxj/Resultado-Final-Con-Uso-Del-Procesador.png)
 
+Tiempo de respuesta: 0.69 ms.
+
+Procesamiento: 692 respuestas por segundo.
+
+Carga: 1,000 usuarios concurrentes.
+
 Enlaces Relacionados
 
 Guía de Optimización
