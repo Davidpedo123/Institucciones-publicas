@@ -33,6 +33,10 @@ Procesamiento: 479 respuestas por segundo.
 
 Carga: 1,000 usuarios concurrentes.
 
+Resultado final utilizando varios workers
+
+![Resultado Final con CPU](https://i.ibb.co/m9SkKxj/Resultado-Final-Con-Uso-Del-Procesador.png)
+
 Enlaces Relacionados
 
 Guía de Optimización
