@@ -87,6 +87,7 @@ Tras las optimizaciones, los resultados mejoraron significativamente:
 - **Tiempo de respuesta:** 2 ms.
 - **Procesamiento:** 479 solicitudes por segundo.
 - **Concurrencia:** 1,000 usuarios simultáneos.
+- **Total transferido:** 62.02 MB.
 - **Comparación:**
   - Inicialmente: 8 segundos y 121 respuestas/segundo.
   - Tras la optimización: 2 ms y 479 respuestas/segundo.
@@ -100,9 +101,10 @@ Configurado para aprovechar varios núcleos del CPU
 - **Tiempo de respuesta:** 0.69 ms.
 - **Procesamiento:** 692 respuestas por segundo.
 - **Concurrencia:** 1,000 usuarios simultáneos.
+- **Total transferido:** 62.02 MB.
 - **Comparación:**
-  - Inicialmente: 8 segundos y 121 respuestas/segundo.
-  - Tras la optimización: 0.69 ms y 692 respuestas/segundo.
+  - Inicialmente: 2 ms y 479 respuestas/segundo.
+  - Tras el uso de los Workers: 0.69 ms y 692 respuestas/segundo.
 
 
 Enlaces Relacionados
