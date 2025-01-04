@@ -90,6 +90,24 @@ Tras las optimizaciones, los resultados mejoraron significativamente:
 - **Comparación:**
   - Inicialmente: 8 segundos y 121 respuestas/segundo.
   - Tras la optimización: 2 ms y 479 respuestas/segundo.
+ 
+## Resultado final utilizando varios workers
+
+Configurado para aprovechar varios núcleos del CPU
+
+![Resultado Final con CPU](https://i.ibb.co/m9SkKxj/Resultado-Final-Con-Uso-Del-Procesador.png)
+
+- **Tiempo de respuesta:** 0.69 ms.
+- **Procesamiento:** 692 respuestas por segundo.
+- **Concurrencia:** 1,000 usuarios simultáneos.
+- **Comparación:**
+  - Inicialmente: 8 segundos y 121 respuestas/segundo.
+  - Tras la optimización: 0.69 ms y 692 respuestas/segundo.
+
+
+Enlaces Relacionados
+
+Guía de Optimización
 
 ## Conclusiones
 
