@@ -7,10 +7,11 @@ from sqlalchemy.orm import sessionmaker
 class instituciones(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     nombre: str
-
+    sigla: str
+    ubicacion: str
 
 engine = create_async_engine(
-    "sqlite+aiosqlite:///./data/data.db",  # Uso de aiosqlite como base de datos
+    "sqlite+aiosqlite:///./data/data2.sqlite",  # Uso de aiosqlite como base de datos
     connect_args={"check_same_thread": False},  # Para SQLite en un solo hilo
 )
 
