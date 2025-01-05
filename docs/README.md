@@ -1,66 +1,134 @@
-Este repositorio aparte de ser una API que contiene todas las instituciones publicas, es una guia de como podemos optimizar el rendimiento de nuestros aplicativos sin tener que aumentar el hardware.
+# Guía de Optimización y Análisis de una API con Instituciones Públicas de la Republica Dominicana
 
-Al inicio del proyecto este era el response de la API tras las pruebas.
+Este repositorio no solo actúa como una API que contiene todas las instituciones públicas Republica Dominicana, sino también como una guía práctica sobre cómo optimizar el rendimiento de aplicaciones sin necesidad de incrementar los recursos de hardware.
+
+## Rendimiento Inicial
+
+### Prueba Inicial
+El primer resultado tras realizar pruebas de carga fue el siguiente:
+
 ![Primera Prueba](https://i.ibb.co/7NQ9Kmb/Primera-Prueba.png)
 
-Como podemos ver con una carga 64kb en un json
-una concurrencia de #1k Usuarios para 1k solicitudes la API nos respondio con un total de 8s, sin ningun failed, un total transferido de 65015000 bytes.
+- **Carga:** 64 KB en formato JSON.
+- **Concurrencia:** 1,000 usuarios simultáneos enviando 1,000 solicitudes.
+- **Resultados:**
+  - Tiempo total: 8 segundos.
+  - Solicitudes fallidas: Ninguna.
+  - Transferencia total: 65,015,000 bytes.
 
-Los puntos de mejora que se trataron, fueron a las entidades como la #BaseDeDatos, el #Endpoint, el acceder a los #Datos, de manera concurrente.
+### Identificación de Áreas de Mejora
+Se detectaron puntos clave a optimizar:
 
-Primer punto, la base de datos la base de datos fue una simple en SQlite una simple consulta con alrededor de 1k registros, la configuracion que esta tenia, al momento de la primera prueba era esta:
+1. **Base de datos:** El uso de SQLite en su configuración inicial era inadecuado para un entorno asíncrono.
+2. **Endpoint:** La implementación tenía un procesamiento sincronizado.
+3. **Acceso a los datos:** Las solicitudes concurridas no eran manejadas eficientemente.
+
+## Configuración Inicial de la Base de Datos
+La configuración inicial de SQLite mostró limitaciones claras:
 
 ![Primera configDB](https://i.ibb.co/T1WcZRp/Config-DBV1.png)
 
-SQlite de por si trabaja de manerea sincronica, no es la mejor opcion para para trabajar de manera asyn.
+- **Problemas:**
+  - SQLite opera de manera sincrónica, lo que genera cuellos de botella en sistemas que utilizan frameworks asíncronos como FastAPI y servidores como Uvicorn.
+  - La sesión no estaba optimizada para manejar solicitudes concurridas.
 
-En este caso accedemos a la base de datos, de manera sync y sin librerias que nos ayuden a manera los loops para las solicitudes async lo cual nos limita la cantidad de sessiones abiertas que podemos tener o consultas concurrentes que podamos hacer.
+En el archivo `main.py`, se utilizaba un generador que accedía a los datos de forma sincrónica. Esto resultó en:
 
-La session, la estamos manejando totalmente sync, cuando estamos usando un framework y un servidor como lo que es Uvicorn que es totalmente async.
+- Datos estáticos que no se actualizaban sin reiniciar el servidor, lo cual es válido para contenidos estáticos.
+- Procesamiento sincrónico que afectaba la escalabilidad.
 
-En el archivo main poseemos lo siguiente:
-![Primera configDB](https://i.ibb.co/QjrXWrv/Configdb-V1.png)
+## Estrategias de Optimización
 
-Accedemos a la consulta en el mismo modulo que usamos como entry points, y creamos un generador, en base a una interacion (Si existe una forma de evitar extraer datos sin tener que interar atravez de un bucle es mejor ese camino), declaramos nuevamente la variable que contiene los datos y la retornamos, en este caso, los datos solo se generan cuando se inicia la aplicacion, estos mismos no se actualizaran al menos que se reinicie el servidor, pero como en este caso los datos son estaticos, esta correcto, pero el como accedemos a las variables, sigue siendo de manera sync, y lo que retornamos es un diccionario, que luego fastapi lo interpretara y aa;adira los header cuando este se procese, lo cual se puede mejorar.
+### Base de Datos
 
-#Mejoras
-'DB'
-Primero comenzamos mejorando los aspectos referente a la primera entidad que es nuestra base de datos
+Se implementaron las siguientes mejoras:
 
-![Primera configDB](https://i.ibb.co/MkLPzLN/Config-DBV2.png)
+1. **Uso de `sqlalchemy.ext.asyncio`:**
+   - Permitimos consultas asíncronas hacia la base de datos.
+2. **Optimización de PRAGMAs:**
+   - Mejoramos el rendimiento ajustando configuraciones específicas de SQLite.
+3. **Fábrica de sesiones:**
+   - Creación de una fábrica de sesiones asíncronas para gestionar mejor las conexiones.
 
-La primera mejora que hicimos fue mediante la lib de msqlalchemy asyncio, permitimos las consultas async hacia la base de datos.
+Nueva configuración:
+![Nueva configDB](https://i.ibb.co/MkLPzLN/Config-DBV2.png)
 
-La segunda mejora fue aprovechar los PRAGMA que este contiene para mejorar el rendimiento de esta.
+### Obtención de Datos
 
-La tercera mejora en esta configuracion fue crear una fabrica de sesiones async con SQlalchemy y creamos una funcion async para obtener esta session.
+Anteriormente, el acceso a los datos era sincrónico y estaba poco estructurado. Las mejoras incluyeron:
 
-'Obtencion de datos'
+1. **Ejecución asíncrona:**
+   - Reescritura del código para hacerlo limpio, escalable y completamente asíncrono.
+2. **Caché:**
+   - Incorporación de almacenamiento temporal para mejorar la eficiencia en consultas repetitivas.
 
-La obtencion de datos anteriormente sync, la convertimos a async, aparte de que hicimos el codigo limpio e escalable, obtenemos la session de manera async, lo cual esta ya la hemos definido para que se pueda acceder de manera async y guardar este contenido en cache.
+![Mejora Obtención Datos](https://i.ibb.co/d2C1bgm/dump.png)
 
-![Primera configDB](https://i.ibb.co/d2C1bgm/dump.png)
+### Endpoint
 
-'Endpoint'
-La parte final de esta optimizacion es en el endpoint, en el cual los puntos importantes, fueron el llamado de los datos de manera async, haciendo todo el proceso totalmente async, otros puntos importantes fueron lo que se retorno, al especificar que es un JSON, acortamos el proceso y como el contenido es estatico, y es medible agregamos en el header, el contenido la longitud del json, en bytes, lo que tambien facilita el proceso, por ultimo agregamos en el header, un cache control, para manejar el cache por parte del cliente, en este caso no afecta tanto al rendimiento, pero en caso de que este se acceda mediante un navegador, si afectaria.
+Las mejoras en los endpoints incluyeron:
 
-![Primera configDB](https://i.ibb.co/Hgr4dkf/main.png)
+1. **Asíncronía total:**
+   - Llamadas de datos asíncronas en todo el proceso.
+2. **Especificación de JSON en la respuesta:**
+   - Esto optimizó el procesamiento al reducir las transformaciones necesarias.
+3. **Cabeceras HTTP:**
+   - Agregado de `Content-Length` y `Cache-Control` para optimizar el manejo del contenido y el caché por parte del cliente.
 
-'Resultado Final'
+Código optimizado del endpoint:
+![Endpoint Optimizado](https://i.ibb.co/Hgr4dkf/main.png)
 
-![Primera configDB](https://i.ibb.co/3SpB4c1/Resultado-Final-Prueba.png)
+## Resultados Finales
 
-2ms en el test, con una carga de 1k usuarios concurrentes procesando 479s por segundo.
+Tras las optimizaciones, los resultados mejoraron significativamente:
 
-Cuando anteriormente sin optimizar, tuvimos el primer resultado de 8s para culminar el test, con la misma carga, pero con 121 respuestas por segundo.
+![Resultado Final](https://i.ibb.co/3SpB4c1/Resultado-Final-Prueba.png)
 
-Sin tener que agregar sistemas complejos de cache o aumentar vertical o horizontalmente la aplicacion!
+- **Tiempo de respuesta:** 2 ms.
+- **Procesamiento:** 479 solicitudes por segundo.
+- **Concurrencia:** 1,000 usuarios simultáneos.
+- **Total transferido:** 62.02 MB.
+- **Comparación:**
+  - Inicialmente: 8 segundos y 121 respuestas/segundo.
+  - Tras la optimización: 2 ms y 479 respuestas/segundo.
+ 
+## Resultado final utilizando varios workers
 
-Caracteristicas del equipo utilizado
+Configurado para aprovechar varios núcleos del CPU
 
-'Usando todo el CPU'
-![cpu](image.png)
-![cpu1]()
-BUILD
-docker build -t api-instituciones-fastapi -f deployment/Dockerfile .
-docker run -p 8080:8080 api-instituciones-fastapi
+![Resultado Final con CPU](https://i.ibb.co/m9SkKxj/Resultado-Final-Con-Uso-Del-Procesador.png)
+
+- **Tiempo de respuesta:** 0.69 ms.
+- **Procesamiento:** 692 respuestas por segundo.
+- **Concurrencia:** 1,000 usuarios simultáneos.
+- **Total transferido:** 62.02 MB.
+- **Comparación:**
+  - Inicialmente: 2 ms y 479 respuestas/segundo.
+  - Tras el uso de los Workers: 0.69 ms y 692 respuestas/segundo.
+
+
+Enlaces Relacionados
+
+Guía de Optimización
+
+## Conclusiones
+
+- Las optimizaciones mostraron que es posible mejorar significativamente el rendimiento sin aumentar los recursos de hardware.
+- SQLite, aunque no es ideal para entornos asíncronos, puede ajustarse con las configuraciones correctas.
+- El manejo eficiente de caché y cabeceras HTTP contribuye al rendimiento global.
+
+## Observaciones 
+
+1. **Aprovechamiento del hardware:** El servidor de uvicorn en la forma que se ejecuto no aprovecha todo el potencial de los nucleos del CPU, el rendimiento podria aumentar si este se configura para esto..
+2. **Cache:** El manejar el cache mediantes proxy o servidores como redis pueden aumentar notablemente el rendimiento de la aplicacion claro con un costo extra en recursos.
+3. **Imagen Docker:** La imagen docker utilizada se puede optimizar para hacer las APIs mas eficiente como tecnicas como el `multi-stage` o usar imagenes `slim` .
+
+Para mayor información sobre los resultados y los gráficos utilizados, consulta las URLs:
+
+- [Primera Prueba](https://i.ibb.co/7NQ9Kmb/Primera-Prueba.png)
+- [Primera Configuración de la Base de Datos](https://i.ibb.co/T1WcZRp/Config-DBV1.png)
+- [Nueva Configuración de la Base de Datos](https://i.ibb.co/MkLPzLN/Config-DBV2.png)
+- [Mejora en la Obtención de Datos](https://i.ibb.co/d2C1bgm/dump.png)
+- [Endpoint Optimizado](https://i.ibb.co/Hgr4dkf/main.png)
+- [Resultado Final](https://i.ibb.co/3SpB4c1/Resultado-Final-Prueba.png)
+
