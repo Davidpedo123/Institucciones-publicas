@@ -6,7 +6,7 @@ Detalles de la API
 
 URL: https://institucciones-publicas-rd.onrender.com/api/instituciones
 
-![Primera Prueba](https://i.ibb.co/5sBNcVT/Response-APIComplete.jpg)
+![Primera Prueba](https://i.ibb.co/1nv0mYL/response-APICom.jpg)
 
 Nota: Las pruebas de rendimiento se realizaron en un entorno local. El servidor desplegado tiene recursos limitados.
 
