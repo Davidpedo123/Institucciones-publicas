@@ -17,6 +17,10 @@ class Instituciones:
                     "nombre": institucion.nombre,
                     "sigla": institucion.sigla,
                     "ubicacion": institucion.ubicacion,
+                    "lat_min" : institucion.lat_min,
+                    "lat_max" : institucion.lat_max,
+                    "lon_min" : institucion.lon_min,
+                    "lon_max" : institucion.lon_max
                 }
                 for institucion in resultados.scalars().all()
             ]

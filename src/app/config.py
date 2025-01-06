@@ -9,6 +9,10 @@ class instituciones(SQLModel, table=True):
     nombre: str
     sigla: str
     ubicacion: str
+    lat_min : float
+    lat_max : float
+    lon_min : float
+    lon_max : float
 
 engine = create_async_engine(
     "sqlite+aiosqlite:///./data/data2.sqlite",  # Uso de aiosqlite como base de datos
